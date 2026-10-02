@@ -1,0 +1,171 @@
+openapi: 3.0.3
+info:
+  title: Harborview Family Clinic API
+  version: 1.0.0
+  description: Appointment booking API for the Harborview Family Clinic test fixture. All rules are deterministic; see README.md.
+servers:
+  - url: https://harborview-clinic.vercel.app
+    description: Production (update after deploying)
+  - url: http://localhost:3000
+    description: Local
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer }
+  schemas:
+    Error:
+      type: object
+      properties:
+        error: { type: string }
+        code: { type: string }
+        errors: { type: object, additionalProperties: { type: string } }
+    Doctor:
+      type: object
+      properties:
+        id: { type: string, example: d1 }
+        name: { type: string }
+        specialty: { type: string }
+        fee: { type: number }
+        rating: { type: number }
+        fullyBooked: { type: boolean }
+    Slot:
+      type: object
+      properties:
+        time: { type: string, example: "09:30" }
+        available: { type: boolean }
+        reason: { type: string, enum: [booked, past] }
+    Appointment:
+      type: object
+      properties:
+        ref: { type: string, example: HV-AB12CD }
+        doctorId: { type: string }
+        doctorName: { type: string }
+        date: { type: string, format: date }
+        time: { type: string }
+        startsAt: { type: string, format: date-time }
+        deposit: { type: number }
+        status: { type: string, enum: [confirmed, cancelled, completed] }
+paths:
+  /api/doctors:
+    get:
+      summary: List clinicians
+      parameters:
+        - { in: query, name: search, schema: { type: string } }
+        - { in: query, name: specialty, schema: { type: string } }
+      responses:
+        "200": { description: Clinicians }
+  /api/doctors/{id}:
+    get:
+      summary: Get a clinician
+      parameters: [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses:
+        "200": { description: Clinician, content: { application/json: { schema: { $ref: "#/components/schemas/Doctor" } } } }
+        "404": { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+  /api/doctors/{id}/slots:
+    get:
+      summary: Slots for a date
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+        - { in: query, name: date, required: true, schema: { type: string, format: date } }
+      responses:
+        "200": { description: Slots }
+        "400": { description: Date outside the 14 day window }
+        "404": { description: Clinician not found }
+  /api/services:
+    get:
+      summary: Services and fees
+      responses:
+        "200": { description: Services }
+  /api/auth/login:
+    post:
+      summary: Log in
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object, properties: { email: { type: string }, password: { type: string } } }
+      responses:
+        "200": { description: Token and user }
+        "400": { description: Missing fields }
+        "401": { description: Incorrect email or password }
+  /api/auth/signup:
+    post:
+      summary: Create a patient account
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object, properties: { name: { type: string }, email: { type: string }, password: { type: string } } }
+      responses:
+        "201": { description: Created }
+        "400": { description: Validation errors }
+        "409": { description: Email already registered (existing@example.com) }
+  /api/appointments:
+    get:
+      summary: The patient's seeded appointments
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200": { description: Appointments }
+        "401": { description: Not logged in }
+    post:
+      summary: Book an appointment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [doctorId, date, time, patient, consent]
+              properties:
+                doctorId: { type: string }
+                date: { type: string, format: date }
+                time: { type: string }
+                consent: { type: boolean }
+                patient:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    dob: { type: string, format: date }
+                    guardian: { type: string }
+                    phone: { type: string }
+                    email: { type: string }
+                    reason: { type: string }
+                    insurance: { type: string, example: ABC-123456 }
+                payment: { type: object, properties: { card: { type: string } } }
+      responses:
+        "201": { description: Booked, content: { application/json: { schema: { $ref: "#/components/schemas/Appointment" } } } }
+        "400": { description: Validation errors, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "402": { description: Deposit card declined (4000000000000002) }
+        "404": { description: Clinician not found }
+        "409": { description: Slot unavailable, or 10:30 always just taken }
+  /api/appointments/{ref}:
+    patch:
+      summary: Reschedule
+      security: [{ bearerAuth: [] }]
+      parameters: [{ in: path, name: ref, required: true, schema: { type: string } }]
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object, properties: { startsAt: { type: string, format: date-time }, doctorId: { type: string }, date: { type: string }, time: { type: string } } }
+      responses:
+        "200": { description: Moved }
+        "401": { description: Not logged in }
+        "409": { description: New slot unavailable }
+        "422": { description: Less than 24 hours before the appointment }
+    delete:
+      summary: Cancel
+      security: [{ bearerAuth: [] }]
+      parameters: [{ in: path, name: ref, required: true, schema: { type: string } }]
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object, properties: { startsAt: { type: string, format: date-time } } }
+      responses:
+        "200": { description: Cancelled }
+        "401": { description: Not logged in }
+        "422": { description: Less than 24 hours before the appointment }
+  /api/admin/blocks:
+    post:
+      summary: Block a slot (staff only)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201": { description: Blocked }
+        "400": { description: Validation errors }
+        "401": { description: Not logged in }
+        "403": { description: Not staff }
