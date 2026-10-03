@@ -48,7 +48,7 @@ Schedule
 Booking
 - Required: full name, date of birth (in the past), 10 digit phone, valid email, reason (5+ characters), privacy consent
 - Patients under 18 need a parent or guardian name
-- Insurance member ID is optional, but if given must look like `ABC-123456`
+- Insurance member ID is optional, but if given must look like `ABC-123456` (any letter case)
 - Dermatology and Cardiology need a refundable $25 deposit by card (16 digits)
 - Card `4000000000000002` is always declined (402)
 - Booking a time that has already passed is always refused (422)
