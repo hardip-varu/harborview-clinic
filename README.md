@@ -77,3 +77,5 @@ Full details are in `openapi.yaml`.
 ## Notes
 
 Data is not persisted. A patient's own new bookings, cancellations and reschedules are kept in the browser (localStorage), while the API validates every change, so behaviour is identical on any server instance.
+
+This app is a test fixture for ContextQA.
