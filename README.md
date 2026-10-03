@@ -51,6 +51,7 @@ Booking
 - Insurance member ID is optional, but if given must look like `ABC-123456`
 - Dermatology and Cardiology need a refundable $25 deposit by card (16 digits)
 - Card `4000000000000002` is always declined (402)
+- Booking a time that has already passed is always refused (422)
 
 Changes
 - Cancelling or rescheduling less than 24 hours before the appointment is always refused (422)

@@ -134,6 +134,7 @@ paths:
         "402": { description: Deposit card declined (4000000000000002) }
         "404": { description: Clinician not found }
         "409": { description: Slot unavailable, or 10:30 always just taken }
+        "422": { description: The chosen time has already passed }
   /api/appointments/{ref}:
     patch:
       summary: Reschedule

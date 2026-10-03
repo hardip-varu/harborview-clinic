@@ -49,7 +49,7 @@ function BookingForm() {
     setBusy(true); setMessage(null); setErrors({});
     const { status, data } = await api("/api/appointments", {
       method: "POST",
-      body: { doctorId: doctor.id, date, time, consent,
+      body: { doctorId: doctor.id, date, time, consent, startsAt: startsAt(date, time).toISOString(),
         patient: { name: form.name, dob: form.dob, guardian: form.guardian, phone: form.phone, email: form.email, reason: form.reason, insurance: form.insurance },
         payment: needsDeposit ? { card: form.card } : undefined },
     });
