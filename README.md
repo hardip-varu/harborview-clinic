@@ -1,6 +1,6 @@
 # Harborview Family Clinic
 
-A realistic outpatient clinic appointment booking app, built as a deterministic test fixture for ContextQA. Patients find a clinician, pick a time, book with validation and an optional deposit, then manage their appointments. Staff can block time.
+A realistic outpatient clinic appointment booking app, built as a deterministic test fixture for ContextQA. Patients find a clinician, pick a time, book with validation and an optional deposit, then manage their appointments.
 
 Built with Next.js 14 (App Router), plain CSS and no database. API routes are stateless, so it runs on Vercel with zero configuration.
 
@@ -24,8 +24,7 @@ Then open http://localhost:3000.
 | `/appointments` | Upcoming, past and cancelled appointments, with cancel and reschedule |
 | `/appointments/reschedule` | Move an appointment to a new date and time |
 | `/services` | Services, fees and deposits |
-| `/login`, `/signup` | Patient and staff accounts |
-| `/admin` | Staff only: block time, see today's bookings |
+| `/login`, `/signup` | Patient accounts |
 
 ## Deterministic rules
 
@@ -33,7 +32,6 @@ Every rule below always behaves the same way, so test results are repeatable.
 
 Accounts
 - Patient login: `demo@example.com` / `password123` (has three seeded appointments)
-- Staff login: `admin@example.com` / `admin123` (can open `/admin`)
 - Signing up with `existing@example.com` always returns 409 (already registered)
 - Passwords need at least 8 characters
 
@@ -71,7 +69,6 @@ Changes
 | POST | /api/appointments | 201, 400, 402, 404, 409 |
 | PATCH | /api/appointments/{ref} | Reschedule: 200, 401, 409, 422 |
 | DELETE | /api/appointments/{ref} | Cancel: 200, 401, 422 |
-| POST | /api/admin/blocks | Staff only: 201, 400, 401, 403 |
 
 Full details are in `openapi.yaml`.
 

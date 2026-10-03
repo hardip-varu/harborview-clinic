@@ -22,7 +22,7 @@ export default function AuthForm({ mode }) {
     if (status === 200 || status === 201) {
       setSession({ token: data.token, user: data.user });
       const next = new URLSearchParams(window.location.search).get("next");
-      router.push(next || (data.user.role === "staff" ? "/admin" : "/appointments"));
+      router.push(next || "/appointments");
       return;
     }
     if (data.errors) setErrors(data.errors);

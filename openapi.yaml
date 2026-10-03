@@ -161,12 +161,3 @@ paths:
         "200": { description: Cancelled }
         "401": { description: Not logged in }
         "422": { description: Less than 24 hours before the appointment }
-  /api/admin/blocks:
-    post:
-      summary: Block a slot (staff only)
-      security: [{ bearerAuth: [] }]
-      responses:
-        "201": { description: Blocked }
-        "400": { description: Validation errors }
-        "401": { description: Not logged in }
-        "403": { description: Not staff }

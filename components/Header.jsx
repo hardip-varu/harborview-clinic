@@ -29,7 +29,6 @@ export default function Header() {
           {link("/", "Find a clinician", "nav-find")}
           {link("/services", "Services and fees", "nav-services")}
           {link("/appointments", "My appointments", "nav-appointments")}
-          {session?.user?.role === "staff" && link("/admin", "Staff", "nav-admin")}
           {session ? (
             <button className="linkish" data-testid="nav-logout" onClick={() => { clearSession(); router.push("/"); }}>
               Log out {session.user?.name ? `(${session.user.name.split(" ")[0]})` : ""}
