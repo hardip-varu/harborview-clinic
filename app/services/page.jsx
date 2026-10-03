@@ -7,7 +7,7 @@ export default function ServicesPage() {
   return (
     <>
       <h1>Services and fees</h1>
-      <p className="muted">All appointments are 30 minutes. Fees are paid at the clinic. Dermatology and cardiology visits need a refundable {formatMoney(DEPOSIT_AMOUNT)} deposit when you book.</p>
+      <p className="muted">Every appointment lasts 30 minutes, and fees are paid at the clinic on the day. Dermatology and cardiology visits need a refundable {formatMoney(DEPOSIT_AMOUNT)} deposit when you book.</p>
       <div className="panel table-wrap">
         <table data-testid="services-table">
           <thead><tr><th>Service</th><th>Specialty</th><th>Length</th><th>Fee</th><th>Deposit</th><th></th></tr></thead>
