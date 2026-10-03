@@ -5,6 +5,24 @@ import { useSearchParams } from "next/navigation";
 import { findLocal } from "@/lib/client";
 import { formatDate, formatMoney } from "@/lib/data";
 
+// Builds a calendar file (.ics) the patient can add to Google, Apple or Outlook calendar.
+function calendarFile(appt) {
+  const start = new Date(appt.startsAt);
+  const end = new Date(start.getTime() + 30 * 60000);
+  const stamp = (d) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const text = (s) => String(s).replace(/[,;\\]/g, (c) => "\\" + c);
+  const lines = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Harborview Family Clinic//Booking//EN", "BEGIN:VEVENT",
+    "UID:" + appt.ref + "@harborview-clinic", "DTSTAMP:" + stamp(new Date()),
+    "DTSTART:" + stamp(start), "DTEND:" + stamp(end),
+    "SUMMARY:" + text("Appointment with " + appt.doctorName),
+    "LOCATION:" + text(appt.room + ", 48 Harbor Road"),
+    "DESCRIPTION:" + text("Booking reference " + appt.ref + ". Please arrive 10 minutes early."),
+    "END:VEVENT", "END:VCALENDAR",
+  ];
+  return "data:text/calendar;charset=utf-8," + encodeURIComponent(lines.join("\r\n"));
+}
+
 function Confirmation() {
   const ref = useSearchParams().get("ref");
   const [appt, setAppt] = useState(undefined);
@@ -40,6 +58,7 @@ function Confirmation() {
       </div>
       <div style={{ display: "flex", gap: 10, marginTop: 22, flexWrap: "wrap" }}>
         <Link className="btn" href="/appointments" data-testid="view-my-appointments">View my appointments</Link>
+        <a className="btn secondary" href={calendarFile(appt)} download={`harborview-${appt.ref}.ics`} data-testid="add-to-calendar">Add to calendar</a>
         <Link className="btn secondary" href="/">Book another</Link>
       </div>
     </>
