@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
         <footer className="site-footer">
           <div className="wrap">
             <span>Harborview Family Clinic, 48 Harbor Road</span>
-            <span>Questions or same-day needs: (555) 010-4400</span>
+            <span>Need help today? Call us on (555) 010-4400</span>
           </div>
         </footer>
       </body>
