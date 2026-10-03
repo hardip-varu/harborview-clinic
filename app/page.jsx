@@ -15,8 +15,8 @@ export default function HomePage() {
     <>
       <section className="hero">
         <div>
-          <h1>See a Harborview clinician this week.</h1>
-          <p>Choose a doctor, dentist or physiotherapist, pick a time that suits you, and get a confirmation straight away.</p>
+          <h1>Book a Harborview clinician in minutes.</h1>
+          <p>Find the right doctor, dentist or physiotherapist, choose a time that suits you, and get instant confirmation.</p>
         </div>
         <div className="hours" data-testid="clinic-hours">
           <strong>Opening hours</strong>
