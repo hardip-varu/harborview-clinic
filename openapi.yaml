@@ -134,6 +134,7 @@ paths:
         "402": { description: Deposit card declined (4000000000000002) }
         "404": { description: Clinician not found }
         "409": { description: Slot unavailable, or 10:30 always just taken }
+        "422": { description: The chosen time has already passed }
   /api/appointments/{ref}:
     patch:
       summary: Reschedule
@@ -160,12 +161,3 @@ paths:
         "200": { description: Cancelled }
         "401": { description: Not logged in }
         "422": { description: Less than 24 hours before the appointment }
-  /api/admin/blocks:
-    post:
-      summary: Block a slot (staff only)
-      security: [{ bearerAuth: [] }]
-      responses:
-        "201": { description: Blocked }
-        "400": { description: Validation errors }
-        "401": { description: Not logged in }
-        "403": { description: Not staff }

@@ -77,7 +77,7 @@ export default function AppointmentsPage() {
           </div>
         ))}
       </div>
-      <p className="small muted" style={{ marginTop: 14 }}>Appointments can be changed up to 24 hours before they start. For anything sooner, call (555) 010-4400.</p>
+      <p className="small muted" style={{ marginTop: 14 }}>You can cancel or reschedule up to 24 hours before your appointment. Within 24 hours, please call us on (555) 010-4400.</p>
     </>
   );
 }
