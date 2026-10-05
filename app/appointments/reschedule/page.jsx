@@ -56,8 +56,8 @@ function Reschedule() {
           ))}
         </div>
         <div className="continue">
-          <span className="muted">{time ? `New time: ${formatDate(pickDate)} at ${time}` : "Pick a new time."}</span>
-          <button className="btn" data-testid="confirm-reschedule" disabled={!time} onClick={save}>Move appointment</button>
+          <span className="muted">{time ? `New time: ${formatDate(pickDate)} at ${time}` : "Choose a new time."}</span>
+          <button className="btn" data-testid="confirm-reschedule" disabled={!time} onClick={save}>Confirm new time</button>
         </div>
       </div>
     </>
