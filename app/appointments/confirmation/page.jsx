@@ -13,7 +13,7 @@ function Confirmation() {
   if (!appt) {
     return (
       <div className="panel empty" data-testid="confirmation-missing">
-        <h2>We couldn't find that booking</h2>
+        <h2>Booking not found</h2>
         <p style={{ margin: "0 auto 16px" }}>Check My appointments, or call the clinic on (555) 010-4400.</p>
         <Link className="btn" href="/appointments">Go to My appointments</Link>
       </div>
