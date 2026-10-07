@@ -84,7 +84,7 @@ export default function DoctorPage({ params }) {
         {isSunday(date) ? (
           <p className="muted" data-testid="closed-message">The clinic is closed on Sundays.</p>
         ) : slots.every((s) => !s.available) ? (
-          <p className="muted" data-testid="no-slots">No free times on this day. Choose another date.</p>
+          <p className="muted" data-testid="no-slots">No free times on this day. Try another date.</p>
         ) : null}
         <div className="slots" role="group" aria-label="Times">
           {slots.map((s) => (
