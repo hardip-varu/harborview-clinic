@@ -51,7 +51,7 @@ export default function DoctorPage({ params }) {
 
       <section className="panel" aria-labelledby="pick-time">
         <div className="week-nav">
-          <h2 id="pick-time" style={{ margin: 0 }}>Choose a time</h2>
+          <h2 id="pick-time" style={{ margin: 0 }}>Choose an appointment time</h2>
           <div style={{ display: "flex", gap: 8 }}>
             <button className="btn secondary" data-testid="prev-week" disabled={week === 0} onClick={() => setWeek(0)}>This week</button>
             <button className="btn secondary" data-testid="next-week" disabled={week === 1} onClick={() => setWeek(1)}>Next week</button>
